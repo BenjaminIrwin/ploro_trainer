@@ -9,8 +9,8 @@ interface DropZoneProps {
 
 
 
-const DropZone = ({onUpload}: DropZoneProps): JSX.Element => {
-  const [uploadedFileName, setUploadedFileName] = useState('');
+const DropZone = ({onUpload, alreadyUploadedFilename}: DropZoneProps & { alreadyUploadedFilename: string }): JSX.Element => {
+  const [uploadedFileName, setUploadedFileName] = useState(alreadyUploadedFilename || '');
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
     console.log('ACCEPTED FILES: ', acceptedFiles)

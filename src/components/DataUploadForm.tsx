@@ -14,7 +14,7 @@ interface DataUploadFormProps {
   onSubmit: (formData: DataUploadFormData) => void;
 }
 
-export default function DataUploadForm({onSubmit}: DataUploadFormProps): JSX.Element {
+export default function DataUploadForm({onSubmit, currData}: DataUploadFormProps & { currData: any }): JSX.Element {
   const [trainingImages, setTrainingImages] = React.useState('');
   const [regularizationImages, setRegularizationImages] = React.useState('');
   
@@ -45,7 +45,7 @@ export default function DataUploadForm({onSubmit}: DataUploadFormProps): JSX.Ele
           <Typography variant="subtitle1" mb={2}>
             Training Images:
           </Typography>
-          <DropZone onUpload={handleTrainingImageUpload}/>
+          <DropZone onUpload={handleTrainingImageUpload} alreadyUploadedFilename={currData.trainingImages}/>
         </Box>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -53,7 +53,7 @@ export default function DataUploadForm({onSubmit}: DataUploadFormProps): JSX.Ele
           <Typography variant="subtitle1" mb={2}>
             Regularization Images:
           </Typography>
-          <DropZone onUpload={handleRegularizationImageUpload}/>
+          <DropZone onUpload={handleRegularizationImageUpload} alreadyUploadedFilename={currData.trainingImages}/>
         </Box>
         </Grid>
       </Grid>
