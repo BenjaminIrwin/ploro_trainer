@@ -4,10 +4,15 @@ import Layout from '../layout';
 import { Text } from '../ui/atoms/text';
 import { Button } from '../ui/atoms/button';
 import TrainingPage from './TrainingPage';
+import Checkout from '../components/Checkout';
 
 const Home: NextPage = () => {
   return (
-    <TrainingPage />
+    <div>
+      <Layout>
+    <Checkout />
+      </Layout>
+    </div>
   );
 };
 

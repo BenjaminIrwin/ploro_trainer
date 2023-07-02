@@ -2,10 +2,10 @@ import { createTheme } from '@mui/material/styles';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 export const darkColors = {
-  dominant: '#000205',
-  dominant50: '#303133',
-  accent: '#F6F8FA',
-  accent50: '#F4FAFF',
+  dominant: '#001e3c',
+  dominant50: '#1a2027',
+  accent: '#cdd2d7',
+  accent50: '#cdd2d7',
   compliment: '#78FAC6',
 };
 

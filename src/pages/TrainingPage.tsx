@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Input, Typography } from '@mui/material';
+import { Box, Button, Input, TextField, Typography } from '@mui/material';
 import DropZone from '../components/DropZone';
 
 const TrainingPage = () => {
@@ -40,10 +40,6 @@ const TrainingPage = () => {
 
   return (
     <Box p={4}>
-      <Typography variant="h1" mb={4}>
-        My Next.js App
-      </Typography>
-
       <Box display="flex" justifyContent="center">
         <Box mb={4} flex={1}>
           <Typography variant="subtitle1" mb={2}>
@@ -60,34 +56,48 @@ const TrainingPage = () => {
           <DropZone /> {/* Replace the comment placeholder with the DropZone component */}
           {/* Add your drag and drop functionality for regularization images here */}
         </Box>
-      </Box>
-
-      <Box mb={4}>
+        <Box mb={4}>
         <Typography variant="subtitle1" mb={2}>
           Prompt:
         </Typography>
-        <Input value={prompt} onChange={handlePromptChange} />
+        <TextField value={prompt} onChange={handlePromptChange} multiline maxRows={4} variant="outlined"/>
       </Box>
 
       <Box mb={4}>
         <Typography variant="subtitle1" mb={2}>
           Negative Prompt:
         </Typography>
-        <Input value={negativePrompt} onChange={handleNegativePromptChange} />
+        <TextField value={negativePrompt} onChange={handleNegativePromptChange} multiline maxRows={4} variant="outlined"/>
       </Box>
+      </Box>
+
+      <Box mb={4}>
+        <Typography variant="subtitle1" mb={2}>
+          Prompt:
+        </Typography>
+        <TextField value={prompt} onChange={handlePromptChange} multiline maxRows={4} variant="outlined"/>
+      </Box>
+
+      <Box mb={4}>
+        <Typography variant="subtitle1" mb={2}>
+          Negative Prompt:
+        </Typography>
+        <TextField value={negativePrompt} onChange={handleNegativePromptChange} multiline maxRows={4} variant="outlined"/>
+      </Box>
+      
 
       <Box mb={4}>
         <Typography variant="subtitle1" mb={2}>
           Base Model:
         </Typography>
-        <Input value={baseModel} onChange={handleBaseModelChange} />
+        <TextField value={baseModel} onChange={handleBaseModelChange} />
       </Box>
 
       <Box mb={4}>
         <Typography variant="subtitle1" mb={2}>
           Email:
         </Typography>
-        <Input value={email} onChange={handleEmailChange} />
+        <TextField value={email} onChange={handleEmailChange} />
       </Box>
 
       <Box display="flex" justifyContent="center">

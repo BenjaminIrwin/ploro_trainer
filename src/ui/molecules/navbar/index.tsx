@@ -40,7 +40,7 @@ function Header({ items }: Iheader) {
   return (
     <HeaderStyled>
       <Link href="/">
-        <Logo>AI</Logo>
+        <Logo>Ploro</Logo>
       </Link>
       <Harmburger onClick={() => setOpenMobileDrawer(!openMobileDrawer)}>
         {openMobileDrawer ? <TimesIcon /> : <BarIcon />}
