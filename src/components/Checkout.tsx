@@ -17,6 +17,7 @@ import TrainingDetailsForm from './TrainingDetailsForm';
 import Review from './Review';
 import { CircularProgress } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+import Train from './Train';
 
 function Copyright() {
   return (
@@ -66,6 +67,24 @@ export default function Checkout() {
     }));
   };
 
+  const startTraining = () => {
+    // Send data to /api/train
+    fetch('/api/train', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(submittedData)
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
@@ -74,6 +93,9 @@ export default function Checkout() {
         return <TrainingDetailsForm currData={submittedData} onSubmit={handleDataChange}/>;
       case 2:
         return <Review currData={submittedData}/>;
+      case 3:
+        startTraining();
+        return <Train email={submittedData.email}/>;
       default:
         throw new Error('Unknown step');
     }
@@ -94,39 +116,25 @@ export default function Checkout() {
               </Step>
             ))}
           </Stepper>
-          {activeStep === steps.length ? (
-            // Spinner
-            <React.Fragment>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress />              
-              <Typography variant="h5" gutterBottom>
-                Training underway...
-              </Typography>
-              </Box>
-              <Typography variant="subtitle1">
-                Your training is underway. You will receive an email when it is complete.
-              </Typography>
-            </React.Fragment>
-          ) : (
             <React.Fragment>
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
+                {(activeStep !== 0 && activeStep < steps.length) && (
                   <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                     Back
                   </Button>
                 )}
-                <Button
+                {activeStep < steps.length && 
+                (<Button
                   disabled= {activeStep === steps.length - 1 ? false : isButtonDisabled}
                   variant="contained"
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
                   {activeStep === steps.length - 1 ? 'Train' : 'Next'}
-                </Button>
+                </Button>)}
               </Box>
             </React.Fragment>
-          )}
         </Paper>
         {/* <Copyright /> */}
       </Container>
