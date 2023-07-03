@@ -9,7 +9,7 @@ interface DropZoneProps {
 const BUCKET_URL = `https://lightsketch-bucket.s3.amazonaws.com`
 
 const DropZone = ({onUpload, alreadyUploadedFilename, sessionId}: DropZoneProps & { alreadyUploadedFilename: string } & {sessionId: string}): JSX.Element => {
-  const [uploadedFileName, setUploadedFileName] = useState(alreadyUploadedFilename || '');
+  const [dropZoneText, setDropZoneText] = useState(alreadyUploadedFilename || 'Drag and drop a zip file here, or click to select a zip file to upload.');
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
 
@@ -50,6 +50,7 @@ const DropZone = ({onUpload, alreadyUploadedFilename, sessionId}: DropZoneProps 
     })
       .then((response) => response.json())
       .then((data) => {
+        setDropZoneText('Uploading...');
         const url = data.url;
         fetch(url, {
           method: "PUT",
@@ -62,8 +63,9 @@ const DropZone = ({onUpload, alreadyUploadedFilename, sessionId}: DropZoneProps 
           .then((response) => {
             const url = `${BUCKET_URL}/${sessionId}/${file.name}`
             // Set the uploaded file name
-            setUploadedFileName(file.name);
             onUpload(url, file.name);
+            const shortenedFileName = file.name.length > 10 ? file.name.substring(0, 10) + '....zip' : file.name;
+            setDropZoneText(`Uploaded ${shortenedFileName}`);
           })
           .catch((error) => {
             // Handle any errors
@@ -131,7 +133,7 @@ const DropZone = ({onUpload, alreadyUploadedFilename, sessionId}: DropZoneProps 
           <div style={{ textAlign: 'center' }}>Drop your zip file here</div>
         ) : (
           <div style={{ textAlign: 'center', cursor: 'pointer' }}>
-            {uploadedFileName ? uploadedFileName : 'Drag and drop your zip file here, or click to select it manually.'}
+            {dropZoneText}
           </div>
         )}
         <input {...getInputProps()} />
