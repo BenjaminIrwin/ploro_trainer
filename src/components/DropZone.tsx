@@ -15,17 +15,23 @@ const DropZone = ({onUpload, alreadyUploadedFilename, sessionId}: DropZoneProps 
 
     if (acceptedFiles.length === 0) {
       console.log('No files were uploaded');
+      // Alert user
+      alert('No files were uploaded')
       return;
     }
 
     if (acceptedFiles.length > 1) {
       console.log('More than one file was uploaded');
+      // Alert user
+      alert('More than one file was uploaded. Make sure you upload only one zip file for each of the training and regularization images.')
       return;
     }
 
     // Reject files that are not zip files
     if (acceptedFiles[0].type !== 'application/zip') {
       console.log('File is not a zip file');
+      // Alert user
+      alert('Upload only zip files.')
       return;
     }
 
@@ -122,10 +128,10 @@ const DropZone = ({onUpload, alreadyUploadedFilename, sessionId}: DropZoneProps 
     >
       <Box mb={2} {...getRootProps()}>
       {isDragActive ? (
-          <div style={{ textAlign: 'center' }}>Drop the files here</div>
+          <div style={{ textAlign: 'center' }}>Drop your zip file here</div>
         ) : (
-          <div style={{ textAlign: 'center' }}>
-            {uploadedFileName ? uploadedFileName : 'Drag and drop files here, or click to select files'}
+          <div style={{ textAlign: 'center', cursor: 'pointer' }}>
+            {uploadedFileName ? uploadedFileName : 'Drag and drop your zip file here, or click to select it manually.'}
           </div>
         )}
         <input {...getInputProps()} />
