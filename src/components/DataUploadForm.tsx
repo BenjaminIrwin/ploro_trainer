@@ -14,25 +14,31 @@ interface DataUploadFormProps {
   onSubmit: (formData: DataUploadFormData) => void;
 }
 
-export default function DataUploadForm({onSubmit, currData}: DataUploadFormProps & { currData: any }): JSX.Element {
-  const [trainingImages, setTrainingImages] = React.useState('');
-  const [regularizationImages, setRegularizationImages] = React.useState('');
+export default function DataUploadForm({onSubmit, currData, sessionId}: DataUploadFormProps & { currData: any } & { sessionId: string }): JSX.Element {
+  const [trainingImages, setTrainingImages] = React.useState(currData === null || !('trainingImages' in currData) ? '' : currData.trainingImages);
+  const [trainingZipName, setTrainingZipName] = React.useState(currData === null || !('trainingZipName' in currData) ? '' : currData.trainingZipName);
+  const [regularizationImages, setRegularizationImages] = React.useState(currData === null || !('regularizationImages' in currData) ? '' : currData.regularizationImages);
+  const [regularizationZipName, setRegularizationZipName] = React.useState(currData === null || !('regularizationZipName' in currData) ? '' : currData.regularizationZipName);
   
-  const handleTrainingImageUpload = (url: string) => {
+  const handleTrainingImageUpload = (url: string, name: string) => {
     setTrainingImages(url);
+    setTrainingZipName(name);
   };
 
-  const handleRegularizationImageUpload = (url: string) => {
+  const handleRegularizationImageUpload = (url: string, name: string) => {
     setRegularizationImages(url);
+    setRegularizationZipName(name);
   };
 
   React.useEffect(() => {
     const formData = {
       trainingImages,
-      regularizationImages
+      trainingZipName,
+      regularizationImages,
+      regularizationZipName
     };
     onSubmit(formData);
-  }, [trainingImages, regularizationImages]);
+  }, [trainingImages, trainingZipName, regularizationImages, regularizationZipName]);
 
   return (
     <React.Fragment>
@@ -45,7 +51,7 @@ export default function DataUploadForm({onSubmit, currData}: DataUploadFormProps
           <Typography variant="subtitle1" mb={2}>
             Training Images:
           </Typography>
-          <DropZone onUpload={handleTrainingImageUpload} alreadyUploadedFilename={currData.trainingImages}/>
+          <DropZone onUpload={handleTrainingImageUpload} alreadyUploadedFilename={currData.trainingZipName} sessionId={sessionId}/>
         </Box>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -53,7 +59,7 @@ export default function DataUploadForm({onSubmit, currData}: DataUploadFormProps
           <Typography variant="subtitle1" mb={2}>
             Regularization Images:
           </Typography>
-          <DropZone onUpload={handleRegularizationImageUpload} alreadyUploadedFilename={currData.trainingImages}/>
+          <DropZone onUpload={handleRegularizationImageUpload} alreadyUploadedFilename={currData.regularizationZipName} sessionId={sessionId}/>
         </Box>
         </Grid>
       </Grid>

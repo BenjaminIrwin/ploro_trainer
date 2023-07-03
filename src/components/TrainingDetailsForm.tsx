@@ -19,21 +19,13 @@ interface TrainingDetailsFormProps {
 }
 
 export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetailsFormProps & { currData: any }): JSX.Element {
-  // Check if currData is null or if currData has the field prompt
-  const [prompt, setPrompt] = useState(currData === null || !('prompt' in currData) ? '' : currData.prompt);
-  const [negativePrompt, setNegativePrompt] = useState(currData === null || !('negativePrompt' in currData) ? '' : currData.negativePrompt);
-  const [baseModel, setBaseModel] = useState(currData === null || !('baseModel' in currData) ? '' : currData.baseModel);
-  const [validBaseModel, setValidBaseModel] = useState('');
-  const [email, setEmail] = useState(currData === null || !('email' in currData) ? '' : currData.email);
-  const [validEmail, setValidEmail] = useState('');
 
-  
-  const handlePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrompt(event.target.value);
-  };
-
-  const handleNegativePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNegativePrompt(event.target.value);
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
   };
 
   const validateBaseModel = (baseModel: string) => {
@@ -46,6 +38,22 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       );
   };
 
+  // Check if currData is null or if currData has the field prompt
+  const [prompt, setPrompt] = useState(currData === null || !('prompt' in currData) ? '' : currData.prompt);
+  const [negativePrompt, setNegativePrompt] = useState(currData === null || !('negativePrompt' in currData) ? '' : currData.negativePrompt);
+  const [baseModel, setBaseModel] = useState(currData === null || !('baseModel' in currData) ? '' : currData.baseModel);
+  const [validBaseModel, setValidBaseModel] = useState(validateBaseModel(baseModel) ? baseModel : '');
+  const [email, setEmail] = useState(currData === null || !('email' in currData) ? '' : currData.email);
+  const [validEmail, setValidEmail] = useState(validateEmail(email) ? email : '');
+  
+  const handlePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPrompt(event.target.value);
+  };
+
+  const handleNegativePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNegativePrompt(event.target.value);
+  };
+
   const handleBaseModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBaseModel(event.target.value);
     // Check if baseModel is valid
@@ -56,14 +64,6 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
     else {
       setValidBaseModel(event.target.value);
     }
-  };
-
-  const validateEmail = (email: string) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {

@@ -49,8 +49,8 @@ export default function Review({ currData }: any) {
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
             Data
           </Typography>
-          <Typography gutterBottom>{currData.regularizationImages}</Typography>
-          <Typography gutterBottom>{currData.trainingImages}</Typography>
+          <Typography gutterBottom>{currData.regularizationZipName}</Typography>
+          <Typography gutterBottom>{currData.trainingZipName}</Typography>
         </Grid>
         <Grid item container direction="column" xs={12} sm={12}>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>

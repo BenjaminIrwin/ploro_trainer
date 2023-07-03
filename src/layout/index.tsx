@@ -11,7 +11,7 @@ interface Props {
 function Layout({ children }: Props) {
   return (
     <>
-      <Header items={navItems} />
+      {/* <Header items={navItems} />/ */}
       <Container sx={{ marginTop: { xs: 4, md: 10 }, marginBottom: 4 }}>
         {children}
       </Container>
