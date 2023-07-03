@@ -16,8 +16,9 @@ import DataUploadForm from './DataUploadForm';
 import TrainingDetailsForm from './TrainingDetailsForm';
 import Review from './Review';
 import { CircularProgress } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 import Train from './Train';
+import { v4 } from 'uuid';
+
 
 function Copyright() {
   return (
@@ -34,7 +35,7 @@ function Copyright() {
 
 const steps = ['Data upload', 'Training details', 'Review'];
 
-const sessionId = uuidv4();
+const sessionId = v4();
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -95,7 +96,7 @@ export default function Checkout() {
         return <Review currData={submittedData}/>;
       case 3:
         startTraining();
-        return <Train email={submittedData.email}/>;
+        return <Train currData={submittedData}/>;
       default:
         throw new Error('Unknown step');
     }
@@ -141,3 +142,4 @@ export default function Checkout() {
     </ThemeProvider>
   );
 }
+
