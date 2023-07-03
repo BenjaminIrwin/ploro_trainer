@@ -23,8 +23,11 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
   const [prompt, setPrompt] = useState(currData === null || !('prompt' in currData) ? '' : currData.prompt);
   const [negativePrompt, setNegativePrompt] = useState(currData === null || !('negativePrompt' in currData) ? '' : currData.negativePrompt);
   const [baseModel, setBaseModel] = useState(currData === null || !('baseModel' in currData) ? '' : currData.baseModel);
+  const [validBaseModel, setValidBaseModel] = useState('');
   const [email, setEmail] = useState(currData === null || !('email' in currData) ? '' : currData.email);
+  const [validEmail, setValidEmail] = useState('');
 
+  
   const handlePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrompt(event.target.value);
   };
@@ -33,12 +36,45 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
     setNegativePrompt(event.target.value);
   };
 
+  const validateBaseModel = (baseModel: string) => {
+    //^https:\/\/civitai\.com\/models\/\d+\/\w+$
+
+    return String(baseModel)
+      .toLowerCase()
+      .match(
+        /^https:\/\/civitai\.com\/models\/\d+\/[-\w]+$/
+      );
+  };
+
   const handleBaseModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBaseModel(event.target.value);
+    // Check if baseModel is valid
+    if (!validateBaseModel(event.target.value)) {
+      console.log("Invalid baseModel");
+      setValidBaseModel('');
+    }
+    else {
+      setValidBaseModel(event.target.value);
+    }
+  };
+
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
+    // Check if email is valid
+    if (!validateEmail(event.target.value)) {
+      console.log("Invalid email");
+      setValidEmail('');
+    } else {
+      setValidEmail(event.target.value);
+    }
   };
 
   const handleSubmit = () => {
@@ -47,14 +83,14 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       prompt,
       negativePrompt,
       baseModel,
-      email
+      email: validEmail
     };
     onSubmit(formData);
   };
 
   useEffect(() => {
     handleSubmit();
-  }, [prompt, negativePrompt, baseModel, email]);
+  }, [prompt, negativePrompt, validBaseModel, validEmail]);
 
   return (
     <React.Fragment>
@@ -65,6 +101,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       <Grid item xs={12} md={12}>
           <TextField
             required
+            error={validEmail === '' && email !== ''}
             label="Your email address"
             fullWidth
             variant="standard"
@@ -79,6 +116,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
             required
             label="Base Model (CivitAI URL)"
             fullWidth
+            error={validBaseModel === '' && baseModel !== ''}
             variant="standard"
             value={baseModel} 
             onChange={handleBaseModelChange}
@@ -112,6 +150,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
             }}
             label="Negative Prompt"
             fullWidth
+            required
             variant="standard"
             value={negativePrompt} 
             onChange={handleNegativePromptChange}

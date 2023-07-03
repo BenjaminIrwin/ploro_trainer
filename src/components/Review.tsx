@@ -58,22 +58,22 @@ export default function Review({ currData }: any) {
           </Typography>
           <Grid container>
               <React.Fragment key='email'>
-              <Grid item xs={6}>
+              <Grid item xs={4}>
                   <Typography gutterBottom>{'Prompt'}</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{currData.email}</Typography>
+                <Grid item xs={8}>
+                  <Typography gutterBottom>{currData.prompt}</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Typography gutterBottom>{'Negative prompt'}</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography gutterBottom>{currData.ne}</Typography>
+                <Grid item xs={8}>
+                  <Typography gutterBottom>{currData.negativePrompt}</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Typography gutterBottom>{'Base model'}</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={8}>
                   <Typography gutterBottom>{currData.baseModel}</Typography>
                 </Grid>
               </React.Fragment>
@@ -85,10 +85,10 @@ export default function Review({ currData }: any) {
           </Typography>
           <Grid container>
               <React.Fragment key='email'>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <Typography gutterBottom>{'email'}</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={8}>
                   <Typography gutterBottom>{currData.email}</Typography>
                 </Grid>
               </React.Fragment>
