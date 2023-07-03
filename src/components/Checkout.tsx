@@ -16,6 +16,7 @@ import DataUploadForm from './DataUploadForm';
 import TrainingDetailsForm from './TrainingDetailsForm';
 import Review from './Review';
 import { CircularProgress } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
 function Copyright() {
   return (
@@ -31,6 +32,8 @@ function Copyright() {
 }
 
 const steps = ['Data upload', 'Training details', 'Review'];
+
+const sessionId = uuidv4();
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -51,13 +54,11 @@ export default function Checkout() {
   const handleDataChange = (data: {}) => {
     // Check if all fields of data are filled
     if(!Object.values(data).every((el) => el !== '')) {
-      console.log('Not all fields are filled')
       setIsButtonDisabled(true);
       return;
     } else {
       setIsButtonDisabled(false);
     }
-    console.log('Added data: ', data);
     // Store the submitted data in state
     setSubmittedData((prevData) => ({
       ...prevData,
@@ -65,18 +66,13 @@ export default function Checkout() {
     }));
   };
 
-  React.useEffect(() => {
-    console.log('Submitted data: ', submittedData);
-  }, [submittedData]);
-
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <DataUploadForm currData={submittedData} onSubmit={handleDataChange}/>;
+        return <DataUploadForm currData={submittedData} onSubmit={handleDataChange} sessionId={sessionId}/>;
       case 1:
         return <TrainingDetailsForm currData={submittedData} onSubmit={handleDataChange}/>;
       case 2:
-        console.log('Submitted data: ', submittedData)
         return <Review currData={submittedData}/>;
       default:
         throw new Error('Unknown step');
@@ -132,7 +128,7 @@ export default function Checkout() {
             </React.Fragment>
           )}
         </Paper>
-        <Copyright />
+        {/* <Copyright /> */}
       </Container>
     </ThemeProvider>
   );
