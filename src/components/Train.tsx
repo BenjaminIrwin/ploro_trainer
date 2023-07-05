@@ -7,7 +7,7 @@ export default function Train({currData}: {currData: any}) {
                       <CircularProgress />
         <div style={{ position: 'relative' }}>
           <h1 style={{ marginTop: '20px' }}>Training underway!</h1>
-          <p>Training is underway. This will take a 30-40 minutes. We will email you when it is done at <b>{currData.email}</b>.</p>
+          <p>Training is underway. This will take 30-40 minutes. We will email you when it is done at <b>{currData.email}</b>.</p>
         </div>
       </div>
     )

@@ -87,10 +87,12 @@ export default function Checkout() {
   };
 
   const getStepContent = (step: number) => {
+    console.log('step: ', step)
     switch (step) {
       case 0:
         return <DataUploadForm currData={submittedData} onSubmit={handleDataChange} sessionId={sessionId}/>;
       case 1:
+        console.log('Rendering TrainingDetailsForm')
         return <TrainingDetailsForm currData={submittedData} onSubmit={handleDataChange}/>;
       case 2:
         return <Review currData={submittedData}/>;

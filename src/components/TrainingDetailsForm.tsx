@@ -2,9 +2,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Box } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 interface TrainingDetailsFormData {
@@ -20,6 +18,8 @@ interface TrainingDetailsFormProps {
 
 export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetailsFormProps & { currData: any }): JSX.Element {
 
+  console.log('LOADING TRAINING DETAILS FORM')
+
   const validateEmail = (email: string) => {
     return String(email)
       .toLowerCase()
@@ -28,23 +28,28 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       );
   };
 
-  const validateBaseModel = (baseModel: string) => {
-    //^https:\/\/civitai\.com\/models\/\d+\/\w+$
-
-    return String(baseModel)
-      .toLowerCase()
-      .match(
-        /^https:\/\/civitai\.com\/models\/\d+\/[-\w]+$/
-      );
-  };
-
   // Check if currData is null or if currData has the field prompt
   const [prompt, setPrompt] = useState(currData === null || !('prompt' in currData) ? '' : currData.prompt);
   const [negativePrompt, setNegativePrompt] = useState(currData === null || !('negativePrompt' in currData) ? '' : currData.negativePrompt);
   const [baseModel, setBaseModel] = useState(currData === null || !('baseModel' in currData) ? '' : currData.baseModel);
-  const [validBaseModel, setValidBaseModel] = useState(validateBaseModel(baseModel) ? baseModel : '');
   const [email, setEmail] = useState(currData === null || !('email' in currData) ? '' : currData.email);
   const [validEmail, setValidEmail] = useState(validateEmail(email) ? email : '');
+  const [models, setModels] = useState(['test', 'test']);
+
+  useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    fetch("api/models", {
+      method: 'GET',
+      headers: myHeaders,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setModels(data.models);
+      })
+      .catch(error => console.log('error', error));
+  }, []); // Empty dependency array, runs once on component mount
   
   const handlePromptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrompt(event.target.value);
@@ -54,16 +59,8 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
     setNegativePrompt(event.target.value);
   };
 
-  const handleBaseModelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBaseModelChange = (event: SelectChangeEvent<any>) => {
     setBaseModel(event.target.value);
-    // Check if baseModel is valid
-    if (!validateBaseModel(event.target.value)) {
-      console.log("Invalid baseModel");
-      setValidBaseModel('');
-    }
-    else {
-      setValidBaseModel(event.target.value);
-    }
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,8 +74,9 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
     }
   };
 
-  const handleSubmit = () => {
-    // Create an object with the form data
+  useEffect(() => {
+    console.log('DATA HAS CHANGED')
+
     const formData = {
       prompt,
       negativePrompt,
@@ -86,11 +84,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       email: validEmail
     };
     onSubmit(formData);
-  };
-
-  useEffect(() => {
-    handleSubmit();
-  }, [prompt, negativePrompt, validBaseModel, validEmail]);
+  }, [prompt, negativePrompt, baseModel, validEmail]);
 
   return (
     <React.Fragment>
@@ -112,17 +106,20 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
           />
         </Grid>
       <Grid item xs={12} md={12}>
-          <TextField
-            required
-            label="Base Model (CivitAI URL)"
-            fullWidth
-            error={validBaseModel === '' && baseModel !== ''}
-            variant="standard"
-            value={baseModel} 
+      <FormControl variant="standard" fullWidth required>
+        <InputLabel id="demo-simple-select-standard-label">Base Model</InputLabel>
+        <Select
+            label="Base Model"
+            value={baseModel}
             onChange={handleBaseModelChange}
-            multiline 
-            maxRows={4}
-          />
+            variant="standard"
+          >
+        {/* Populate select with models  */}
+        {models.map((model) => (
+          <MenuItem value={model}>{model}</MenuItem>
+        ))}
+        </Select>
+      </FormControl>
         </Grid>
         <Grid item xs={12} md={12}>
           <TextField

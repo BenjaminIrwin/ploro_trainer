@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 import DropZone from './DropZone';
 
-
 interface DataUploadFormData {
   trainingImages: String;
   regularizationImages: String;
@@ -15,6 +14,8 @@ interface DataUploadFormProps {
 }
 
 export default function DataUploadForm({onSubmit, currData, sessionId}: DataUploadFormProps & { currData: any } & { sessionId: string }): JSX.Element {
+  console.log('LOADING DATA UPLOAD FORM')
+  
   const [trainingImages, setTrainingImages] = React.useState(currData === null || !('trainingImages' in currData) ? '' : currData.trainingImages);
   const [trainingZipName, setTrainingZipName] = React.useState(currData === null || !('trainingZipName' in currData) ? '' : currData.trainingZipName);
   const [regularizationImages, setRegularizationImages] = React.useState(currData === null || !('regularizationImages' in currData) ? '' : currData.regularizationImages);
@@ -31,6 +32,7 @@ export default function DataUploadForm({onSubmit, currData, sessionId}: DataUplo
   };
 
   React.useEffect(() => {
+    console.log('DATA HAS CHANGED')
     const formData = {
       trainingImages,
       trainingZipName,
