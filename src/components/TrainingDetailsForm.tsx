@@ -116,7 +116,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
           >
         {/* Populate select with models  */}
         {models.map((model) => (
-          <MenuItem value={model}>{model}</MenuItem>
+          <MenuItem key={model} value={model}>{model}</MenuItem>
         ))}
         </Select>
       </FormControl>
