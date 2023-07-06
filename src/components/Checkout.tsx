@@ -33,6 +33,24 @@ function Copyright() {
   );
 }
 
+const startTraining = (submittedData: {}) => {
+  // Send data to /api/train
+  fetch('/api/train', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(submittedData)
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 const steps = ['Data upload', 'Training details', 'Review'];
 
 const sessionId = v4();
@@ -41,11 +59,16 @@ const sessionId = v4();
 const defaultTheme = createTheme();
 
 export default function Checkout() {
+
+  console.log('LOADING CHECKOUT')
   const [activeStep, setActiveStep] = React.useState(0);
   const [submittedData, setSubmittedData] = React.useState({}); // State variable to store submitted data
   const [isButtonDisabled, setIsButtonDisabled] = React.useState(true);
 
   const handleNext = () => {
+    if (activeStep === steps.length - 1) {
+      startTraining(submittedData);
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -68,36 +91,15 @@ export default function Checkout() {
     }));
   };
 
-  const startTraining = () => {
-    // Send data to /api/train
-    fetch('/api/train', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(submittedData)
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const getStepContent = (step: number) => {
-    console.log('step: ', step)
     switch (step) {
       case 0:
         return <DataUploadForm currData={submittedData} onSubmit={handleDataChange} sessionId={sessionId}/>;
       case 1:
-        console.log('Rendering TrainingDetailsForm')
         return <TrainingDetailsForm currData={submittedData} onSubmit={handleDataChange}/>;
       case 2:
         return <Review currData={submittedData}/>;
       case 3:
-        startTraining();
         return <Train currData={submittedData}/>;
       default:
         throw new Error('Unknown step');

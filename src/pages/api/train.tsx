@@ -19,4 +19,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         body: JSON.stringify(train_body)
     })
 
+    res.status(200).json({ message: 'Training started!' });
+
 };
