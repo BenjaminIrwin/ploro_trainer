@@ -7,6 +7,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         email: body.email,
         sample_prompt: body.prompt,
         training_images: body.trainingImages,
+        negative_prompt: body.negativePrompt,
         base_model: body.baseModel
     }
 
