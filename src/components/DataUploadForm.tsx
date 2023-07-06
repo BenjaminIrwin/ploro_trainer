@@ -6,7 +6,7 @@ import DropZone from './DropZone';
 
 interface DataUploadFormData {
   trainingImages: String;
-  regularizationImages: String;
+  // regularizationImages: String;
 }
 
 interface DataUploadFormProps {
@@ -36,8 +36,8 @@ export default function DataUploadForm({onSubmit, currData, sessionId}: DataUplo
     const formData = {
       trainingImages,
       trainingZipName,
-      regularizationImages,
-      regularizationZipName
+      // regularizationImages,
+      // regularizationZipName
     };
     onSubmit(formData);
   }, [trainingImages, trainingZipName, regularizationImages, regularizationZipName]);
@@ -48,7 +48,7 @@ export default function DataUploadForm({onSubmit, currData, sessionId}: DataUplo
         Data
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12}>
         <Box mb={4}>
           <Typography variant="subtitle1" mb={2}>
             Training Images:
@@ -56,14 +56,14 @@ export default function DataUploadForm({onSubmit, currData, sessionId}: DataUplo
           <DropZone onUpload={handleTrainingImageUpload} alreadyUploadedFilename={currData.trainingZipName} sessionId={sessionId}/>
         </Box>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        {/* <Grid item xs={12} sm={6}>
         <Box>
           <Typography variant="subtitle1" mb={2}>
             Regularization Images:
           </Typography>
           <DropZone onUpload={handleRegularizationImageUpload} alreadyUploadedFilename={currData.regularizationZipName} sessionId={sessionId}/>
         </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </React.Fragment>
   );
