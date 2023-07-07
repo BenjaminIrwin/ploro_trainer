@@ -12,15 +12,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         model_name: body.modelName
     }
 
-    console.log(train_body)
-
-    // fetch('https://api.continuousargumentframework.com/train', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify(train_body)
-    // })
+    fetch('https://api.continuousargumentframework.com/train', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(train_body)
+    })
 
     res.status(200).json({ message: 'Training started!' });
 
