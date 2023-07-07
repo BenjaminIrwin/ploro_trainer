@@ -26,6 +26,12 @@ export default function Review({ currData }: any) {
           <Grid container>
               <React.Fragment key='email'>
               <Grid item xs={4}>
+                  <Typography gutterBottom>{'Model name'}</Typography>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography gutterBottom>{currData.modelName + '.safetensors'}</Typography>
+                </Grid>
+              <Grid item xs={4}>
                   <Typography gutterBottom>{'Prompt'}</Typography>
                 </Grid>
                 <Grid item xs={8}>

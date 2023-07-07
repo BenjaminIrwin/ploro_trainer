@@ -28,13 +28,23 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       );
   };
 
+  const validateModelName = (modelName: string) => {
+    return String(modelName)
+      .toLowerCase()
+      .match(
+        /^[a-zA-Z0-9_]*$/
+      );
+  }
+
   // Check if currData is null or if currData has the field prompt
   const [prompt, setPrompt] = useState(currData === null || !('prompt' in currData) ? '' : currData.prompt);
   const [negativePrompt, setNegativePrompt] = useState(currData === null || !('negativePrompt' in currData) ? '' : currData.negativePrompt);
   const [baseModel, setBaseModel] = useState(currData === null || !('baseModel' in currData) ? '' : currData.baseModel);
   const [email, setEmail] = useState(currData === null || !('email' in currData) ? '' : currData.email);
   const [validEmail, setValidEmail] = useState(validateEmail(email) ? email : '');
-  const [models, setModels] = useState(['test', 'test']);
+  const [baseModels, setBaseModels] = useState(['test', 'test']);
+  const [modelName, setModelName] = useState(currData === null || !('modelName' in currData) ? '' : currData.modelName);
+  const [validModelName, setValidModelName] = useState(validateModelName(modelName) ? modelName : '');
 
   useEffect(() => {
     var myHeaders = new Headers();
@@ -46,7 +56,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
     })
       .then((response) => response.json())
       .then((data) => {
-        setModels(data.models);
+        setBaseModels(data.models);
       })
       .catch(error => console.log('error', error));
   }, []); // Empty dependency array, runs once on component mount
@@ -62,6 +72,18 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
   const handleBaseModelChange = (event: SelectChangeEvent<any>) => {
     setBaseModel(event.target.value);
   };
+
+  const handleModelNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setModelName(event.target.value);
+    // Check if model name is valid
+    if (!validateModelName(event.target.value)) {
+      console.log("Invalid model name");
+      setValidModelName('');
+    } else {
+      setValidModelName(event.target.value);
+    }
+  };
+
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -81,10 +103,11 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
       prompt,
       negativePrompt,
       baseModel,
-      email: validEmail
+      email: validEmail,
+      modelName: validModelName
     };
     onSubmit(formData);
-  }, [prompt, negativePrompt, baseModel, validEmail]);
+  }, [prompt, negativePrompt, baseModel, validEmail, validModelName]);
 
   return (
     <React.Fragment>
@@ -92,6 +115,19 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
         Training details
       </Typography>
       <Grid container spacing={3}>
+      <Grid item xs={12} md={12}>
+          <TextField
+            required
+            error={validModelName === '' && modelName !== ''}
+            label="Model name (alphanumeric and underscores only)"
+            fullWidth
+            variant="standard"
+            value={modelName}
+            onChange={handleModelNameChange} 
+            multiline 
+            maxRows={4}
+          />
+        </Grid>
       <Grid item xs={12} md={12}>
           <TextField
             required
@@ -115,7 +151,7 @@ export default function TrainingDetailsForm({onSubmit, currData}: TrainingDetail
             variant="standard"
           >
         {/* Populate select with models  */}
-        {models.map((model) => (
+        {baseModels.map((model) => (
           <MenuItem key={model} value={model}>{model}</MenuItem>
         ))}
         </Select>
